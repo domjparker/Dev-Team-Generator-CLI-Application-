@@ -1,0 +1,42 @@
+body {
+    font-family: "Jost", sans-serif;
+    min-height: 100vh;
+    background-image: url("abstract-architectural-design-architecture-building-136419.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+/* Title */
+.myTeam {
+    color: #17706e;
+    font-family: 'Shrikhand', cursive;
+}
+
+/* Cards */
+.card {
+    margin: 10px 10px;
+    border: 0;
+    width: 300px;
+}
+
+.card-header{
+    background-color: #b6eb7a;
+    color: #17706e;
+  }
+
+.card-body {
+    background-color: #f7f7ee;
+  }
+
+.list-group-item {
+    background-color: #f7f7ee;
+    border: 0;
+    color: #17706e;
+  }
+
+/* Icons */
+.fas {
+    color: #fb7813
+}

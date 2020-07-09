@@ -1,23 +1,26 @@
+// *Global variables
+// class function files
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+// npm packages
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
+// folder and file to be rendered to
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
-
+// file with render functions for each type of employee
 const render = require("./lib/htmlRenderer");
-const Employee = require("./lib/Employee");
 const teamArray = [];
 
+// inquire what type of employee to add to team, and give option to get team file, or quit
 function addTeamMember() {
     inquirer.prompt({
         type: "list",
         message: "What would you like to do?",
         name: "addEmployeeYesNo",
-        choices: ["Add a manager to team","Add an engineer to team","Add an intern to team","Get the team HTML file","Quit"]
+        choices: ["Add a manager to team","Add an engineer to team","Add an intern to team","Get team HTML file","Quit"]
     }).then(function ({ addEmployeeYesNo }) {
         switch (addEmployeeYesNo) {
             case "Add a manager to team":
@@ -32,13 +35,14 @@ function addTeamMember() {
             case "Get team HTML file":
                 getTeamFile(outputPath,render(teamArray));
                 break;
-            default:
+            case "Quit":
                 console.log("This has ended the application."); 
                 break;
         }
     })
 };
 
+// inquire info when adding manager
 function addManager() {
     inquirer.prompt([
         {
@@ -61,14 +65,15 @@ function addManager() {
             message: "what is this manager's office number?",
             name: "officeNumber"
         }
-    ]).then(function (addManager) {
-        const thisManager = new Manager(addManager);
+    ]).then(function (ans) {
+        const thisManager = new Manager(ans.name,ans.id,ans.email,ans.officeNumber);
         teamArray.push(thisManager);
-        console.log(`${addManager.name} has been added as a manager. Your team now has ${teamArray.length} member(s).`);
+        console.log(teamArray);
         addTeamMember()
     })
 };
 
+// inquire info when adding engineer
 function addEngineer() {
     inquirer.prompt([
         {
@@ -91,14 +96,14 @@ function addEngineer() {
             message: "What is this engineer's Github username?",
             name: "github"
         }
-    ]).then(function (addEngineer) {
-        const thisEngineer = new Engineer(addEngineer);
+    ]).then(function (ans) {
+        const thisEngineer = new Engineer(ans.name,ans.id,ans.email,ans.github);
         teamArray.push(thisEngineer);
-        console.log(`${addEngineer.name} has been added as a manager. Your team now has ${teamArray.length} member(s).`);
         addTeamMember()
     })
 };
 
+// inquire info when adding intern
 function addIntern() {
     inquirer.prompt([
         {
@@ -121,51 +126,28 @@ function addIntern() {
             message: "What school does this intern attend?",
             name: "school"
         }
-    ]).then(function (addIntern) {
-        const thisIntern = new Intern(addIntern);
+    ]).then(function (ans) {
+        const thisIntern = new Intern(ans.name,ans.id,ans.email,ans.school);
         teamArray.push(thisIntern);
-        console.log(`${addIntern.name} has been added as a manager. Your team now has ${teamArray.length} member(s).`);
         addTeamMember()
     })
 };
 
-function getTeamFile(outputPath,renderTeam) {
+// initiate team info being written to HTML file
+function getTeamFile(filePath,data) {
     if(!teamArray.length) {
         console.log("First, you need to add members to the team.");
         addTeamMember();
     }
     else {
-        
+        fs.writeFile(filePath,data,"utf8",function(err) {
+            if (err) {
+                throw (err);
+            } 
+            console.log("team File has been rendered")
+        }) 
     }
 };
 
+// call function to start inquiry process
 addTeamMember()
-
-
-
-
-
-
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
