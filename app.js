@@ -1,5 +1,5 @@
 // *Global variables
-// class function files
+// class files
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -8,8 +8,8 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 // folder and file to be rendered to
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+const OUTPUT_DIR = path.resolve(__dirname, "output");  // ./output
+const outputPath = path.join(OUTPUT_DIR, "team.html"); // ./output/team.html
 // file with render functions for each type of employee
 const render = require("./lib/htmlRenderer");
 const teamArray = [];
@@ -68,7 +68,6 @@ function addManager() {
     ]).then(function (ans) {
         const thisManager = new Manager(ans.name,ans.id,ans.email,ans.officeNumber);
         teamArray.push(thisManager);
-        console.log(teamArray);
         addTeamMember()
     })
 };
@@ -134,13 +133,13 @@ function addIntern() {
 };
 
 // initiate team info being written to HTML file
-function getTeamFile(filePath,data) {
+function getTeamFile(fileName,data) {
     if(!teamArray.length) {
         console.log("First, you need to add members to the team.");
         addTeamMember();
     }
     else {
-        fs.writeFile(filePath,data,"utf8",function(err) {
+        fs.writeFile(fileName,data,"utf8",function(err) {
             if (err) {
                 throw (err);
             } 

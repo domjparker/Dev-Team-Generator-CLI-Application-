@@ -16,7 +16,7 @@ body {
 
 /* Cards */
 .card {
-    margin: 10px 10px;
+    margin: 9px 9px;
     border: 0;
     width: 300px;
 }
@@ -28,6 +28,7 @@ body {
 
 .card-body {
     background-color: #f7f7ee;
+    padding: 5px;
   }
 
 .list-group-item {
